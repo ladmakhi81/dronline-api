@@ -5,6 +5,7 @@ import { Gender } from './gender';
 import { CategoryEntity } from './category';
 import { ScheduleEntity } from './schedule';
 import { OrderEntity } from './order';
+import { UserType } from './user-type';
 
 @Entity({ name: '_users' })
 export class UserEntity extends CoreEntity {
@@ -17,22 +18,22 @@ export class UserEntity extends CoreEntity {
   @Column({ name: 'phone' })
   phone: string;
 
-  @Column({ name: 'phone2', default: '' })
+  @Column({ name: 'phone2', nullable: true })
   phone2: string;
 
-  @Column({ name: 'bio', default: '' })
+  @Column({ name: 'bio', nullable: true })
   bio: string;
 
-  @Column({ name: 'address', default: '' })
+  @Column({ name: 'address', nullable: true })
   address: string;
 
-  @Column({ name: 'degree_of_education' })
+  @Column({ name: 'degree_of_education', nullable: true })
   degreeOfEducation: DegtreeOfEducation;
 
-  @Column({ name: 'gender', default: null })
+  @Column({ name: 'gender', nullable: true })
   gender: Gender;
 
-  @Column({ name: 'image', default: '' })
+  @Column({ name: 'image', nullable: true })
   image: string;
 
   @Column({ name: 'is_active' })
@@ -53,4 +54,7 @@ export class UserEntity extends CoreEntity {
 
   @OneToMany(() => OrderEntity, (order) => order.doctor)
   patientsOrders: OrderEntity[];
+
+  @Column({ name: 'user_type' })
+  type: UserType;
 }

@@ -2,7 +2,7 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { CoreEntity } from './core';
 import { UserDocumentationEntity } from './user-documentation';
 import { UserEntity } from './user';
-import moment from 'moment';
+import * as moment from 'moment';
 import { jsonTransformer } from './json-transformer';
 import { ScheduleType } from './schedule-type';
 import { OrderStatus } from './order-status';

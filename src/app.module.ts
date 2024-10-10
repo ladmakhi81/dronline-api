@@ -1,6 +1,21 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthController } from './controllers/auth';
+import { AuthService } from './services/auth';
+import { AccessTokenGuard } from './guards/access-token';
+import { JsonWebTokenStrategy } from './strategies/jwt-strategy';
+import { JwtService } from '@nestjs/jwt';
+import { CategoryEntity } from './entities/category';
+import { DaysOffEntity } from './entities/days-off';
+import { LocationEntity } from './entities/location';
+import { OrderEntity } from './entities/order';
+import { RefreshTokenEntity } from './entities/refresh-token';
+import { ScheduleEntity } from './entities/schedule';
+import { TicketEntity } from './entities/ticket';
+import { UserDocumentationEntity } from './entities/user-documentation';
+import { UserEntity } from './entities/user';
+import { RoleCheckerGuard } from './guards/role-checker';
 
 @Module({
   imports: [
@@ -16,9 +31,30 @@ import { TypeOrmModule } from '@nestjs/typeorm';
           host: configService.get<string>('DB_HOST'),
           type: configService.get<string>('DB_TYPE') as any,
           port: configService.get<number>('DB_PORT'),
+          autoLoadEntities: true,
+          synchronize: true,
+          entities: [
+            CategoryEntity,
+            DaysOffEntity,
+            LocationEntity,
+            OrderEntity,
+            RefreshTokenEntity,
+            ScheduleEntity,
+            TicketEntity,
+            UserDocumentationEntity,
+            UserEntity,
+          ],
         };
       },
     }),
+  ],
+  controllers: [AuthController],
+  providers: [
+    AuthService,
+    AccessTokenGuard,
+    JsonWebTokenStrategy,
+    JwtService,
+    RoleCheckerGuard,
   ],
 })
 export class AppModule {}
