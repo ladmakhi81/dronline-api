@@ -125,14 +125,14 @@ export class AuthService {
   generateToken(user: UserEntity) {
     return this.jwtService.sign(
       { id: user.id, type: user.type },
-      { secret: this.getSigninKey(), expiresIn: 60 },
+      { secret: this.getSigninKey(), expiresIn: '1h' },
     );
   }
 
   async generateRefreshToken(user: UserEntity) {
     const { refreshToken } = await RefreshTokenEntity.save(
       RefreshTokenEntity.create({
-        expiresAt: moment().add(1, 'minute'),
+        expiresAt: moment().add(1, 'day'),
         refreshToken: randomBytes(10).toString('hex'),
         user,
       }),

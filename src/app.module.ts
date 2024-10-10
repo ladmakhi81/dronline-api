@@ -18,6 +18,8 @@ import { UserEntity } from './entities/user';
 import { RoleCheckerGuard } from './guards/role-checker';
 import { RefreshTokenStrategy } from './strategies/refresh-token-strategy';
 import { RefreshTokenGuard } from './guards/refresh-token';
+import { CategoryController } from './controllers/category';
+import { CategoryService } from './services/category';
 
 @Module({
   imports: [
@@ -50,7 +52,7 @@ import { RefreshTokenGuard } from './guards/refresh-token';
       },
     }),
   ],
-  controllers: [AuthController],
+  controllers: [AuthController, CategoryController],
   providers: [
     AuthService,
     AccessTokenGuard,
@@ -59,6 +61,7 @@ import { RefreshTokenGuard } from './guards/refresh-token';
     RoleCheckerGuard,
     RefreshTokenStrategy,
     RefreshTokenGuard,
+    CategoryService,
   ],
 })
 export class AppModule {}
