@@ -4,7 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthController } from './controllers/auth';
 import { AuthService } from './services/auth';
 import { AccessTokenGuard } from './guards/access-token';
-import { JsonWebTokenStrategy } from './strategies/jwt-strategy';
+import { JsonWebTokenStrategy } from './strategies/access-token-strategy';
 import { JwtService } from '@nestjs/jwt';
 import { CategoryEntity } from './entities/category';
 import { DaysOffEntity } from './entities/days-off';
@@ -16,6 +16,8 @@ import { TicketEntity } from './entities/ticket';
 import { UserDocumentationEntity } from './entities/user-documentation';
 import { UserEntity } from './entities/user';
 import { RoleCheckerGuard } from './guards/role-checker';
+import { RefreshTokenStrategy } from './strategies/refresh-token-strategy';
+import { RefreshTokenGuard } from './guards/refresh-token';
 
 @Module({
   imports: [
@@ -55,6 +57,8 @@ import { RoleCheckerGuard } from './guards/role-checker';
     JsonWebTokenStrategy,
     JwtService,
     RoleCheckerGuard,
+    RefreshTokenStrategy,
+    RefreshTokenGuard,
   ],
 })
 export class AppModule {}

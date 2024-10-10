@@ -71,6 +71,26 @@ export class AuthService {
     return;
   }
 
+  async updateToken(refreshTokenCode: string, user: UserEntity) {
+    const refreshToken = await RefreshTokenEntity.findOne({
+      where: { refreshToken: refreshTokenCode, user: { id: user.id } },
+    });
+    if (!refreshToken) {
+      throw new NotFoundException('error: refresh token is not found');
+    }
+    if (
+      moment(refreshToken.expiresAt, 'YYYY/MM/DD HH:mm').isBefore(
+        moment(moment.now(), 'YYYY/MM/DD HH:mm'),
+      )
+    ) {
+      throw new NotFoundException('error: refresh token expired');
+    }
+    const accessToken = await this.generateToken(user);
+    const newRefreshToken = await this.generateRefreshToken(user);
+    await this.deleteRefreshTokens(user);
+    return { accessToken, refreshToken: newRefreshToken };
+  }
+
   async changePassword(dto: ChangePasswordDTO, loggedInUser: UserEntity) {
     const user = await UserEntity.findOne({ where: { id: loggedInUser.id } });
     if (!user || !(await this.comparePassword(dto.password, user.password))) {
@@ -98,22 +118,21 @@ export class AuthService {
     return bcrypt.compare(password, hashedPassword);
   }
 
+  getSigninKey() {
+    return this.configService.get<string>('SECRET_KEY');
+  }
+
   generateToken(user: UserEntity) {
     return this.jwtService.sign(
       { id: user.id, type: user.type },
-      { secret: this.getSigninKey(), expiresIn: '1h' },
+      { secret: this.getSigninKey(), expiresIn: 60 },
     );
-  }
-
-  getSigninKey() {
-    return this.configService.get<string>('SECRET_KEY');
   }
 
   async generateRefreshToken(user: UserEntity) {
     const { refreshToken } = await RefreshTokenEntity.save(
       RefreshTokenEntity.create({
-        expiresAt: moment().add(1, 'hour'),
-        isExpired: false,
+        expiresAt: moment().add(1, 'minute'),
         refreshToken: randomBytes(10).toString('hex'),
         user,
       }),

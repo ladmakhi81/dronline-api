@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   Inject,
   Param,
   ParseIntPipe,
@@ -17,6 +18,7 @@ import { SignupPatientDto } from 'src/dtos/signup-patient';
 import { UserEntity } from 'src/entities/user';
 import { UserType } from 'src/entities/user-type';
 import { AccessTokenGuard } from 'src/guards/access-token';
+import { RefreshTokenGuard } from 'src/guards/refresh-token';
 import { RoleCheckerGuard } from 'src/guards/role-checker';
 import { AuthService } from 'src/services/auth';
 
@@ -51,5 +53,20 @@ export class AuthController {
     @Body() dto: ChangePasswordByAdminDTO,
   ) {
     return this.authService.changePasswordByAdmin(id, dto);
+  }
+
+  @UseGuards(RefreshTokenGuard)
+  @Post('/refresh-token/:refresh-token')
+  updateToken(
+    @Param('refresh-token') refreshToken: string,
+    @CurrentUser() currentUser: UserEntity,
+  ) {
+    return this.authService.updateToken(refreshToken, currentUser);
+  }
+
+  @UseGuards(AccessTokenGuard)
+  @Get('X')
+  x() {
+    return { message: '' };
   }
 }
