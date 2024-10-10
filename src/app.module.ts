@@ -20,6 +20,8 @@ import { RefreshTokenStrategy } from './strategies/refresh-token-strategy';
 import { RefreshTokenGuard } from './guards/refresh-token';
 import { CategoryController } from './controllers/category';
 import { CategoryService } from './services/category';
+import { LocationController } from './controllers/location';
+import { LocationService } from './services/location';
 
 @Module({
   imports: [
@@ -52,7 +54,7 @@ import { CategoryService } from './services/category';
       },
     }),
   ],
-  controllers: [AuthController, CategoryController],
+  controllers: [AuthController, CategoryController, LocationController],
   providers: [
     AuthService,
     AccessTokenGuard,
@@ -62,6 +64,7 @@ import { CategoryService } from './services/category';
     RefreshTokenStrategy,
     RefreshTokenGuard,
     CategoryService,
+    LocationService,
   ],
 })
 export class AppModule {}
