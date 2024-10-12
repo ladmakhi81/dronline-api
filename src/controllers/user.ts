@@ -6,6 +6,7 @@ import {
   Inject,
   Param,
   ParseIntPipe,
+  Patch,
   Post,
   Query,
   UploadedFile,
@@ -51,5 +52,14 @@ export class UserController {
   @Delete(':id')
   deleteUserById(@Param('id', ParseIntPipe) id: number) {
     return this.userService.deleteById(id);
+  }
+
+  @Patch(':id/:type')
+  editUserById(
+    @Param('id', ParseIntPipe) id: number,
+    @Param('type') type: string,
+    @Body() dto: Record<string, any>,
+  ) {
+    return this.userService.editUser(type, id, dto);
   }
 }

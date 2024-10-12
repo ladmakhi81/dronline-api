@@ -37,6 +37,17 @@ export class UserService {
     }
   }
 
+  editUser(type: string, id: number, dto: Record<string, any>) {
+    switch (type as UserType) {
+      case UserType.Admin:
+        return this.userAdminService.editAdminById(id, dto);
+      case UserType.Doctor:
+        return this.userDoctorService.editDoctorById(id, dto);
+      case UserType.Patient:
+        return this.userPatientService.editPatientById(id, dto);
+    }
+  }
+
   async uploadImage(file: File) {
     try {
       const filePath = `/upload/${new Date().getTime()}-${Math.floor(
