@@ -29,6 +29,8 @@ import { UserDoctorService } from './services/user-doctor';
 import { UserPatientService } from './services/user-patient';
 import { ScheduleService } from './services/schedule';
 import { ScheduleController } from './controllers/schedule';
+import { DaysOffService } from './services/days-off';
+import { DaysOffController } from './controllers/days-off';
 
 @Module({
   imports: [
@@ -67,6 +69,7 @@ import { ScheduleController } from './controllers/schedule';
     LocationController,
     UserController,
     ScheduleController,
+    DaysOffController,
   ],
   providers: [
     AuthService,
@@ -83,6 +86,7 @@ import { ScheduleController } from './controllers/schedule';
     UserDoctorService,
     UserPatientService,
     ScheduleService,
+    DaysOffService,
   ],
 })
 export class AppModule {}
