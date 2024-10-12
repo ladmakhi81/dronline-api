@@ -10,7 +10,7 @@ export class RefreshTokenEntity extends CoreEntity {
   @Column({ name: 'expires_at' })
   expiresAt: Date;
 
-  @ManyToOne(() => UserEntity)
+  @ManyToOne(() => UserEntity, { onDelete: 'SET NULL', onUpdate: 'SET NULL' })
   @JoinColumn()
   user: UserEntity;
 }

@@ -22,6 +22,11 @@ import { CategoryController } from './controllers/category';
 import { CategoryService } from './services/category';
 import { LocationController } from './controllers/location';
 import { LocationService } from './services/location';
+import { UserService } from './services/user';
+import { UserController } from './controllers/user';
+import { UserAdminService } from './services/user-admin';
+import { UserDoctorService } from './services/user-doctor';
+import { UserPatientService } from './services/user-patient';
 
 @Module({
   imports: [
@@ -54,7 +59,12 @@ import { LocationService } from './services/location';
       },
     }),
   ],
-  controllers: [AuthController, CategoryController, LocationController],
+  controllers: [
+    AuthController,
+    CategoryController,
+    LocationController,
+    UserController,
+  ],
   providers: [
     AuthService,
     AccessTokenGuard,
@@ -65,6 +75,10 @@ import { LocationService } from './services/location';
     RefreshTokenGuard,
     CategoryService,
     LocationService,
+    UserService,
+    UserAdminService,
+    UserDoctorService,
+    UserPatientService,
   ],
 })
 export class AppModule {}
