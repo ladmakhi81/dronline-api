@@ -35,6 +35,9 @@ export class LocationService {
       skip: limit * page,
       take: limit,
       order: { id: -1 },
+      relations: {
+        doctorSchedules: { doctor: true },
+      },
     });
     const count = await LocationEntity.count();
     return { content, count };

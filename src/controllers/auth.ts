@@ -45,6 +45,12 @@ export class AuthController {
     return this.authService.changePassword(dto, currentUser);
   }
 
+  @UseGuards(AccessTokenGuard)
+  @Get('/profile')
+  getProfile(@CurrentUser() user: UserEntity) {
+    return user;
+  }
+
   @UseGuards(AccessTokenGuard, RoleCheckerGuard)
   @Patch('/admin/change-password/:id')
   @SetMetadata('user-type', UserType.Admin)
