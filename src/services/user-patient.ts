@@ -37,6 +37,7 @@ export class UserPatientService {
         password: dto.password,
         phone: dto.phone,
         isActive: true,
+        type: UserType.Patient,
       }),
     );
   }

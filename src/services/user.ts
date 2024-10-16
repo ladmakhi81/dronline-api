@@ -62,18 +62,22 @@ export class UserService {
     }
   }
 
-  getUsers(page: number, limit: number, query: Record<string, any>) {
+  async getUsers(page: number, limit: number, query: Record<string, any>) {
     let where: Record<string, any> = {};
     if (query.type) {
       where.type = query.type;
     }
-    return UserEntity.find({
+    const content = await UserEntity.find({
       where,
       skip: limit * page,
       take: limit,
       relations: { workingFields: true },
       order: { createdAt: -1 },
     });
+    const count = await UserEntity.count({
+      where,
+    });
+    return { content, count };
   }
 
   async getUserById(id: number) {
