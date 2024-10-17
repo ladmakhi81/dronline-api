@@ -31,6 +31,11 @@ import { ScheduleService } from './services/schedule';
 import { ScheduleController } from './controllers/schedule';
 import { DaysOffService } from './services/days-off';
 import { DaysOffController } from './controllers/days-off';
+import { TransactionEntity } from './entities/transaction';
+import { TransactionService } from './services/transaction';
+import { OrderService } from './services/order';
+import { OrderController } from './controllers/order';
+import { TransactionController } from './controllers/transaction';
 
 @Module({
   imports: [
@@ -58,6 +63,7 @@ import { DaysOffController } from './controllers/days-off';
             TicketEntity,
             UserDocumentationEntity,
             UserEntity,
+            TransactionEntity,
           ],
         };
       },
@@ -70,6 +76,8 @@ import { DaysOffController } from './controllers/days-off';
     UserController,
     ScheduleController,
     DaysOffController,
+    OrderController,
+    TransactionController,
   ],
   providers: [
     AuthService,
@@ -87,6 +95,8 @@ import { DaysOffController } from './controllers/days-off';
     UserPatientService,
     ScheduleService,
     DaysOffService,
+    TransactionService,
+    OrderService,
   ],
 })
 export class AppModule {}

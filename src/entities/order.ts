@@ -1,11 +1,19 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+  OneToOne,
+} from 'typeorm';
 import { CoreEntity } from './core';
 import { UserDocumentationEntity } from './user-documentation';
 import { UserEntity } from './user';
 import * as moment from 'moment';
-import { jsonTransformer } from './json-transformer';
 import { ScheduleType } from './schedule-type';
 import { OrderStatus } from './order-status';
+import { TransactionEntity } from './transaction';
 
 @Entity({ name: '_orders' })
 export class OrderEntity extends CoreEntity {
@@ -26,20 +34,17 @@ export class OrderEntity extends CoreEntity {
   @Column({ name: 'day' })
   day: number;
 
-  @Column({ name: 'city' })
+  @Column({ name: 'city', nullable: true })
   city: string;
 
-  @Column({ name: 'address' })
+  @Column({ name: 'address', nullable: true })
   address: string;
 
   @Column({ name: 'date', default: moment.now() })
   date: string;
 
-  @Column({ name: 'room' })
+  @Column({ name: 'room', nullable: true })
   room: number;
-
-  @Column({ name: 'categories', transformer: jsonTransformer, type: 'text' })
-  categories: { enName: string; faName: string }[];
 
   @Column({ name: 'type' })
   type: ScheduleType;
@@ -52,4 +57,8 @@ export class OrderEntity extends CoreEntity {
 
   @Column({ name: 'status', default: OrderStatus.Pending })
   status: OrderStatus = OrderStatus.Pending;
+
+  @OneToOne(() => TransactionEntity, (transactions) => transactions.order)
+  @JoinColumn()
+  transaction: TransactionEntity;
 }

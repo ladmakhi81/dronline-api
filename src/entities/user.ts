@@ -6,6 +6,7 @@ import { CategoryEntity } from './category';
 import { ScheduleEntity } from './schedule';
 import { OrderEntity } from './order';
 import { UserType } from './user-type';
+import { TransactionEntity } from './transaction';
 
 @Entity({ name: '_users' })
 export class UserEntity extends CoreEntity {
@@ -60,4 +61,10 @@ export class UserEntity extends CoreEntity {
 
   @Column({ name: 'user_type' })
   type: UserType;
+
+  @OneToMany(() => TransactionEntity, (transaction) => transaction.customer)
+  transactionOrders: TransactionEntity[];
+
+  @OneToMany(() => TransactionEntity, (transaction) => transaction.doctor)
+  transactionEarned: TransactionEntity[];
 }
