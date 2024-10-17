@@ -15,21 +15,26 @@ export class ScheduleService {
     if (!doctor) {
       throw new NotFoundException('error: doctor is not found');
     }
-    const location = await LocationEntity.findOne({
-      where: { id: dto.location },
-    });
-    if (!location) {
-      throw new NotFoundException('error: location is not found');
+    if (dto.location) {
+      dto.location = (await LocationEntity.findOne({
+        where: { id: dto.location as number },
+      })) as LocationEntity;
+      if (!dto.location) {
+        throw new NotFoundException('error: location is not found');
+      }
+    } else {
+      delete dto.location;
+      delete dto.room;
     }
     return ScheduleEntity.save(
       ScheduleEntity.create({
         day: dto.day,
         endHour: dto.endHour,
         startHour: dto.startHour,
-        location,
         doctor,
         type: dto.type,
         room: dto.room,
+        location: dto.location as LocationEntity,
       }),
     );
   }

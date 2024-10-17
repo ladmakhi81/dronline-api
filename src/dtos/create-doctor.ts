@@ -2,6 +2,7 @@ import {
   IsArray,
   IsEnum,
   IsNotEmpty,
+  IsOptional,
   IsString,
   MinLength,
 } from 'class-validator';
@@ -48,7 +49,7 @@ export class CreateDoctorDTO {
   @IsEnum(Gender)
   gender: Gender;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   image: string;
 

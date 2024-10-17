@@ -98,9 +98,9 @@ export class UserDoctorService {
         throw new NotFoundException('error: working fields is not found');
       }
       doctor.workingFields = newWorkingFields;
+      await doctor.save();
       delete dto.workingFields;
     }
     await UserEntity.update({ id }, { ...dto } as any);
-    await doctor.save();
   }
 }

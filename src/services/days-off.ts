@@ -50,6 +50,7 @@ export class DaysOffService {
   getDaysOffDoctor(doctorId: number) {
     return DaysOffEntity.find({
       where: { schedule: { doctor: { id: doctorId } } },
+      relations: { schedule: true },
     });
   }
 

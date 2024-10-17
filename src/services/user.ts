@@ -15,6 +15,7 @@ import { File } from 'src/types/file';
 import { Jimp as jimp } from 'jimp';
 import * as path from 'path';
 import { UserEntity } from 'src/entities/user';
+import { ScheduleEntity } from 'src/entities/schedule';
 
 @Injectable()
 export class UserService {
@@ -50,12 +51,12 @@ export class UserService {
 
   async uploadImage(file: File) {
     try {
-      const filePath = `/upload/${new Date().getTime()}-${Math.floor(
+      const filePath = `${new Date().getTime()}-${Math.floor(
         Math.random() * 100000000,
       )}.png`;
       const image = await jimp.read(file.buffer);
       image.resize({ h: 320, w: 320 });
-      image.write(path.join(__dirname, '..', '..', filePath) as any);
+      image.write(path.join(__dirname, '..', '..', 'upload', filePath) as any);
       return { filePath };
     } catch (error) {
       return '';
@@ -98,6 +99,7 @@ export class UserService {
 
   async deleteById(id: number) {
     const user = await this.getUserById(id);
+    await ScheduleEntity.delete({ doctor: { id: user.id } });
     await user.remove();
   }
 }

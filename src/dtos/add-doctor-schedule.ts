@@ -1,4 +1,11 @@
-import { IsEnum, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import {
+  IsEnum,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
+import { LocationEntity } from 'src/entities/location';
 import { ScheduleType } from 'src/entities/schedule-type';
 
 export class AddDoctorScheduleDTO {
@@ -18,11 +25,11 @@ export class AddDoctorScheduleDTO {
   @IsNumber()
   doctor: number;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsNumber()
-  location: number;
+  location: number | LocationEntity;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsNumber()
   room: number;
 

@@ -7,7 +7,10 @@ import { LocationEntity } from './location';
 
 @Entity({ name: '_schedules' })
 export class ScheduleEntity extends CoreEntity {
-  @ManyToOne(() => UserEntity, (userEntity) => userEntity.schedules)
+  @ManyToOne(() => UserEntity, (userEntity) => userEntity.schedules, {
+    onDelete: 'NO ACTION',
+    cascade: false,
+  })
   @JoinColumn()
   doctor: UserEntity;
 
@@ -30,7 +33,7 @@ export class ScheduleEntity extends CoreEntity {
   @Column({ name: 'type' })
   type: ScheduleType;
 
-  @Column({ name: 'room' })
+  @Column({ name: 'room', nullable: true })
   room: number;
 
   @OneToMany(() => DaysOffEntity, (daysOff) => daysOff.schedule)

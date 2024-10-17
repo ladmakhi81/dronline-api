@@ -49,7 +49,10 @@ export class UserEntity extends CoreEntity {
   @JoinTable()
   workingFields: CategoryEntity[];
 
-  @OneToMany(() => ScheduleEntity, (schedules) => schedules.doctor)
+  @OneToMany(() => ScheduleEntity, (schedules) => schedules.doctor, {
+    onDelete: 'NO ACTION',
+    cascade: false,
+  })
   schedules: ScheduleEntity[];
 
   @OneToMany(() => OrderEntity, (order) => order.doctor)
