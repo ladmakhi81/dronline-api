@@ -58,7 +58,11 @@ export class TransactionService {
     const content = await TransactionEntity.find({
       skip: page * limit,
       take: limit,
-      relations: { doctor: true, customer: true, order: true },
+      relations: {
+        doctor: true,
+        customer: true,
+        order: { patient: true, doctor: true },
+      },
       order: { createdAt: -1 },
     });
     const count = await TransactionEntity.count();

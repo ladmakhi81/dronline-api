@@ -79,4 +79,13 @@ export class ScheduleController {
       query || {},
     );
   }
+
+  @Get()
+  getSchedules(@Query() query: Record<string, any>) {
+    return this.scheduleService.getSchedules(
+      Number.isNaN(+query.page) ? 0 : +query.page,
+      Number.isNaN(+query.limit) ? 10 : +query.limit,
+      query,
+    );
+  }
 }

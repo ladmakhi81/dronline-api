@@ -11,6 +11,7 @@ import { UserEntity } from 'src/entities/user';
 import { TransactionService } from './transaction';
 import { SubmitOrderDTO } from 'src/dtos/submit-order';
 import * as moment from 'moment';
+import { MoreThanOrEqual } from 'typeorm';
 
 @Injectable()
 export class OrderService {
@@ -62,5 +63,54 @@ export class OrderService {
     });
 
     return order;
+  }
+
+  async getOrders(page: number, limit: number, query: Record<string, any>) {
+    let where: Record<string, any> = {};
+    if (query?.['date.gte']) {
+      where = {
+        ...where,
+        date: MoreThanOrEqual(query?.['date.gte']),
+      };
+    }
+    if (query?.doctor) {
+      where = {
+        ...where,
+        doctor: {
+          id: query.doctor,
+        },
+      };
+    }
+    const content = await OrderEntity.find({
+      skip: page * limit,
+      take: limit,
+      relations: {
+        doctor: true,
+        patient: true,
+        transaction: { doctor: true, customer: true },
+      },
+      order: { createdAt: -1 },
+      where,
+    });
+    const count = await OrderEntity.count({ where });
+
+    return { count, content };
+  }
+
+  async cancelOrder(id: number) {
+    const order = await OrderEntity.findOne({ where: { id } });
+    if (!order) {
+      throw new NotFoundException('error: order not found');
+    }
+    order.status = OrderStatus.Cancel;
+    await order.save();
+  }
+
+  async deleteOrder(id: number) {
+    const order = await OrderEntity.findOne({ where: { id } });
+    if (!order) {
+      throw new NotFoundException('error: order not found');
+    }
+    await order.remove();
   }
 }

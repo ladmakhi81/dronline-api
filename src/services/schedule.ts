@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import moment from 'moment';
 import { AddDoctorScheduleDTO } from 'src/dtos/add-doctor-schedule';
 import { AddScheduleByDoctor } from 'src/dtos/add-schedule-by-doctor';
 import { LocationEntity } from 'src/entities/location';
@@ -88,7 +89,6 @@ export class ScheduleService {
       doctor: { id: doctorId },
       ...this.prepareGetDoctorScheduleParam(query),
     };
-
     const doctor = await UserEntity.findOne({
       where: { id: doctorId },
     });
@@ -107,6 +107,40 @@ export class ScheduleService {
     });
     const count = await ScheduleEntity.count({
       where,
+    });
+    return { content, count };
+  }
+
+  async getSchedules(page: number, limit: number, query: Record<string, any>) {
+    let where: Record<string, any> = {};
+
+    if (query.day) {
+      where = { ...where, day: query.day };
+    }
+
+    if (query.doctor) {
+      where = { ...where, doctor: { id: query.doctor } };
+    }
+
+    if (query.type) {
+      where = { ...where, type: query.type };
+    }
+
+    if (query.startHour) {
+      where = { ...where, startHour: query.startHour };
+    }
+
+    if (query.endHour) {
+      where = { ...where, endHour: query.endHour };
+    }
+
+    const count = await ScheduleEntity.count();
+    const content = await ScheduleEntity.find({
+      where,
+      relations: { doctor: true, location: true, daysOff: true },
+      skip: limit * page,
+      take: limit,
+      order: { createdAt: -1 },
     });
     return { content, count };
   }
