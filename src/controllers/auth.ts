@@ -7,6 +7,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
   SetMetadata,
   UseGuards,
 } from '@nestjs/common';
@@ -62,17 +63,11 @@ export class AuthController {
   }
 
   @UseGuards(RefreshTokenGuard)
-  @Post('/refresh-token/:refresh-token')
+  @Post('/refresh-token')
   updateToken(
-    @Param('refresh-token') refreshToken: string,
+    @Query('refresh-token') refreshToken: string,
     @CurrentUser() currentUser: UserEntity,
   ) {
     return this.authService.updateToken(refreshToken, currentUser);
-  }
-
-  @UseGuards(AccessTokenGuard)
-  @Get('X')
-  x() {
-    return { message: '' };
   }
 }

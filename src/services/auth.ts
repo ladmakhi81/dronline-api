@@ -125,7 +125,7 @@ export class AuthService {
   generateToken(user: UserEntity) {
     return this.jwtService.sign(
       { id: user.id, type: user.type },
-      { secret: this.getSigninKey(), expiresIn: '1h' },
+      { secret: this.getSigninKey(), expiresIn: '1m' },
     );
   }
 
